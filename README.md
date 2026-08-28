@@ -47,3 +47,61 @@ You should have a `configs/global_configs.py`, with the template in `configs/glo
     to use Tsinghua Pypi mirror
 
 3. install npm (see `FAQs/npm_install.md`)
+
+4. set up databases:
+
+   for a fresh setup, run
+
+   ```
+   python scripts/setup_databases.py
+   ```
+
+   which will create all databases (mysql, postgres, sqlite, mongodb, redis, milvus, etc.) with empty tables. You can always re-run it to reset the databases to empty state.
+
+   **Please do not run this if you are not the first one to set up the
+   environment.** This will wipe all existing data. If someone else has
+   already set up the environment, just contact them and ask for the
+   credentials.
+
+   After setup, the credentials are stored in `configs/global_configs.py`.
+   The databases are assumed to be accessed by both MCP servers and terminals
+   on this machine. Please keep these credentials in a safe place, and do not
+   publish them.
+
+5. set up MCP servers
+
+   ```
+   cd configs/mcp_servers
+   ```
+
+   For servers requiring API keys (embedding generation, reranking, web search,
+   etc.), you need to fill in the API keys in the server configs. See README in each
+   server folder for details. You can leave unset keys as empty for now; you can
+   always fill them in later when you need to use them.
+
+6. (optional) set up LLM APIs
+
+   If you want to use LLM APIs, you need to fill in the API keys in
+   `configs/global_configs.py`.
+
+### Structure
+
+```
+mcpbench_dev/
+├── configs/                  # Configuration files
+│   ├── global_configs.py     # Global database credentials and API keys
+│   ├── mcp_servers/          # MCP server configurations
+├── mcpbench_dev/             # Main package
+│   ├── schemas/              # Pydantic models for tools and databases
+│   ├── servers/              # Individual MCP server implementations (mysql, postgres, redis)
+│   ├── utils/                # Utilities (db connectors, embedding, rerank, search engines)
+├── scripts/                  # Setup and utility scripts
+└── tests/                    # Tests for servers
+```
+
+### FAQ
+See `FAQs/` for common issues, e.g., npm_install.md, setup_proxy.md,
+
+### Collaborations
+- For bug reports or feature requests, please open an issue or directly ping junlong.
+- For contributions, feel free to open a PR.
